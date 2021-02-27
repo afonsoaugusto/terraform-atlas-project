@@ -30,3 +30,4 @@ override.tf.json
 notas.txt
 backend.tf
 .terraform.lock.hcl
+tf.plan
