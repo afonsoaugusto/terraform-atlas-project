@@ -13,3 +13,6 @@ plan: terraform-plan
 apply: terraform-deploy
 deploy: plan apply
 destroy: destroy-terraform
+fast-plan:
+	cd ./${TERRAFORM_FOLDER}/ && \
+	terraform plan -var-file=vars/global.tfvars -var-file=vars/${env}.tfvars -out tf.plan

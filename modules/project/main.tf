@@ -7,16 +7,16 @@ resource "mongodbatlas_project" "project" {
 }
 
 output "id" {
-  value = mongodbatlas_project.project.id
+  value       = mongodbatlas_project.project.id
   description = "The project id."
 }
 
 output "created" {
-  value = mongodbatlas_project.project.created
+  value       = mongodbatlas_project.project.created
   description = "The ISO-8601-formatted timestamp of when Atlas created the project."
 }
 
 output "cluster_count" {
-  value = mongodbatlas_project.project.cluster_count
+  value       = mongodbatlas_project.project.cluster_count
   description = "The number of Atlas clusters deployed in the project."
 }
