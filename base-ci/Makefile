@@ -68,6 +68,10 @@ terraform-tfsec:
 	cd ./${TERRAFORM_FOLDER}/ && \
 	tfsec . --no-color
 
+terraform-validate:
+	cd ./${TERRAFORM_FOLDER}/ && \
+	terraform validate
+
 terraform-clean:
 	cd ./${TERRAFORM_FOLDER}/ && \
 	rm -rf .terraform/ && \
@@ -94,7 +98,7 @@ terraform-select-workspace: terraform-init
 	cd ./${TERRAFORM_FOLDER}/ && \
 	terraform workspace select $(env)
 
-terraform-plan: terraform-select-workspace terraform-tfsec
+terraform-plan: terraform-select-workspace terraform-validate terraform-tfsec
 	cd ./${TERRAFORM_FOLDER}/ && \
 	terraform plan -var-file=vars/global.tfvars -var-file=vars/${env}.tfvars -out tf.plan
 
