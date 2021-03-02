@@ -1,3 +1,0 @@
-[submodule "base-ci"]
-	path = base-ci
-	url = git@github.com:afonsoaugusto/base-ci.git
