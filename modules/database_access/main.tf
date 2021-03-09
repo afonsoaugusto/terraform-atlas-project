@@ -1,32 +1,50 @@
 variable "username" {}
 variable "project_id" {}
 
+variable "tags" {
+  default = {}
+  type    = map(any)
+}
+
+variable "linked_clusters" {
+  default = []
+  type    = list(any)
+}
+
+
 variable "list_db_name_privilege_dbAdmin" {
   default = []
+  type    = list(any)
 }
 
 variable "list_db_name_privilege_read" {
   default = []
+  type    = list(any)
 }
 
 variable "list_db_name_privilege_readWrite" {
   default = []
+  type    = list(any)
 }
 
 variable "db_role_readAnyDatabase" {
   default = false
+  type    = bool
 }
 
 variable "db_role_readWriteAnyDatabase" {
   default = false
+  type    = bool
 }
 
 variable "db_role_clusterMonitor" {
   default = false
+  type    = bool
 }
 
 variable "db_role_dbAdminAnyDatabase" {
   default = false
+  type    = bool
 }
 
 variable "db_role_enableSharding" {
@@ -39,6 +57,7 @@ variable "db_role_backup" {
 
 variable "db_role_atlasAdmin" {
   default = false
+  type    = bool
 }
 
 locals {
@@ -84,20 +103,45 @@ resource "mongodbatlas_database_user" "user" {
     }
   }
 
-  labels {
-    key   = "My Key"
-    value = "My Value"
+  dynamic "roles" {
+    for_each = toset(var.list_db_name_privilege_dbAdmin)
+    content {
+      role_name     = "dbAdmin"
+      database_name = roles.key
+    }
   }
 
-  # scopes {
-  #   name = "My cluster name"
-  #   type = "CLUSTER"
-  # }
+  dynamic "roles" {
+    for_each = toset(var.list_db_name_privilege_read)
+    content {
+      role_name     = "read"
+      database_name = roles.key
+    }
+  }
 
-  # scopes {
-  #   name = "My second cluster name"
-  #   type = "CLUSTER"
-  # }
+  dynamic "roles" {
+    for_each = toset(var.list_db_name_privilege_readWrite)
+    content {
+      role_name     = "readWrite"
+      database_name = roles.key
+    }
+  }
+
+  dynamic "labels" {
+    for_each = var.tags
+    content {
+      key   = labels.key
+      value = labels.value
+    }
+  }
+
+  dynamic "scopes" {
+    for_each = toset(var.linked_clusters)
+    content {
+      name = scopes.key
+      type = "CLUSTER"
+    }
+  }
 }
 
 output "id" {

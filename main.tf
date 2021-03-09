@@ -40,3 +40,12 @@ module "database_access_user_application" {
   username   = var.user_application
   project_id = module.project.id
 }
+
+module "database_access_user_admin" {
+  source                         = "./modules/database_access"
+  username                       = "admin"
+  tags                           = map("role", "admin")
+  list_db_name_privilege_dbAdmin = ["application"]
+  db_role_atlasAdmin             = true
+  project_id                     = module.project.id
+}
